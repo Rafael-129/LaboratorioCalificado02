@@ -1,47 +1,48 @@
 package com.garcia.rafael.usolayoutsv4
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.garcia.rafael.usolayoutsv4.ui.theme.LaboratorioCalificado02Theme
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            LaboratorioCalificado02Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+data class Contacto(val nombre: String, val telefono: String, val email: String)
+
+class Agenda {
+    private val contactos = mutableListOf<Contacto>()
+
+    fun agregarContacto(contacto: Contacto) {
+        contactos.add(contacto)
+        println("Contacto agregado correctamente.")
+    }
+
+    fun listarContactos() {
+        if (contactos.isEmpty()) {
+            println("No hay contactos.")
+        } else {
+            println("Lista de contactos:")
+            contactos.forEach { println(it) }
+        }
+    }
+
+    fun buscarContacto(nombre: String) {
+        val resultado = contactos.filter { it.nombre.contains(nombre, ignoreCase = true) }
+        if (resultado.isEmpty()) {
+            println("No se encontraron contactos con ese nombre.")
+        } else {
+            println("Contactos encontrados:")
+            resultado.forEach { println(it) }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun main() {
+    val agenda = Agenda()
+    agenda.agregarContacto(Contacto("Juan Perez", "987654321", "juan@gmail.com"))
+    agenda.agregarContacto(Contacto("Ana Díaz", "923456789", "ana@gmail.com"))
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LaboratorioCalificado02Theme {
-        Greeting("Android")
-    }
+    agenda.listarContactos()
+
+    println("Buscar contacto: Ana")
+    agenda.buscarContacto("Ana")
 }
